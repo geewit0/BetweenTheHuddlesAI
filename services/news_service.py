@@ -1,49 +1,90 @@
-import os
-import sys
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
 import requests
 
 
 class NewsService:
 
     def __init__(self):
-        self.url = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news"
 
-    def get_news(self, limit=5):
+        self.team_ids = {
+            "saints": "no",
+            "new orleans saints": "no",
+            "cowboys": "dal",
+            "eagles": "phi",
+            "packers": "gb",
+            "49ers": "sf",
+            "lions": "det",
+            "chiefs": "kc",
+            "bills": "buf"
+        }
+
+
+    def get_news(self, limit=5, team=None):
 
         try:
-            response = requests.get(self.url, timeout=10)
-            response.raise_for_status()
+
+            if team and team.lower() in self.team_ids:
+
+                abbreviation = self.team_ids[team.lower()]
+
+                url = (
+                    "https://site.api.espn.com/apis/site/v2/"
+                    f"sports/football/nfl/news?team={abbreviation}"
+                )
+
+            else:
+
+                url = (
+                    "https://site.api.espn.com/apis/site/v2/"
+                    "sports/football/nfl/news"
+                )
+
+
+            response = requests.get(
+                url,
+                timeout=10
+            )
 
             data = response.json()
 
-            articles = []
+            articles = data.get("articles", [])
 
-            for article in data.get("articles", [])[:limit]:
+            results = []
 
-                articles.append({
+            for article in articles:
+
+                results.append({
                     "headline": article.get("headline"),
                     "description": article.get("description"),
                     "published": article.get("published"),
-                    "link": article.get("links", {}).get("web", {}).get("href")
+                    "link": article.get("links", {})
+                        .get("web", {})
+                        .get("href")
                 })
 
-            return articles
+                if len(results) >= limit:
+                    break
+
+
+            return results
+
 
         except Exception as e:
-            print(e)
+
+            print("News Error:", e)
             return []
 
 
 if __name__ == "__main__":
 
-    service = NewsService()
+    news = NewsService()
 
-    news = service.get_news()
+    articles = news.get_news(
+        5,
+        "saints"
+    )
 
-    for article in news:
+    for article in articles:
+
         print(article["headline"])
-        print(article["published"])
-        print("------------------------")
+        print(article["description"])
+        print("-" * 40)

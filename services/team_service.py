@@ -19,6 +19,7 @@ class TeamService:
         self.games = GameService()
         self.news = NewsService()
 
+
     def get_team(self, search):
 
         conn = sqlite3.connect(self.db)
@@ -42,18 +43,27 @@ class TeamService:
 
         conn.close()
 
+
         if row is None:
             return None
 
+
         team = dict(row)
+
 
         team["next_game"] = self.games.get_next_game(
             team["abbreviation"]
         )
 
-        team["news"] = self.news.get_news(3)
+
+        team["news"] = self.news.get_news(
+            3,
+            team["name"]
+        )
+
 
         return team
+
 
 
 if __name__ == "__main__":
