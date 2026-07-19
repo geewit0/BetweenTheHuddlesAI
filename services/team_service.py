@@ -3,6 +3,7 @@ import os
 
 from services.game_service import GameService
 from services.news_service import NewsService
+from services.injury_service import InjuryService
 
 
 class TeamService:
@@ -18,6 +19,7 @@ class TeamService:
 
         self.games = GameService()
         self.news = NewsService()
+        self.injuries = InjuryService()
 
 
     def get_team(self, search):
@@ -43,27 +45,25 @@ class TeamService:
 
         conn.close()
 
-
         if row is None:
             return None
 
-
         team = dict(row)
-
 
         team["next_game"] = self.games.get_next_game(
             team["abbreviation"]
         )
 
-
         team["news"] = self.news.get_news(
             3,
-            team["name"]
+            search
         )
 
+        team["injuries"] = self.injuries.get_injuries(
+            5
+        )
 
         return team
-
 
 
 if __name__ == "__main__":
