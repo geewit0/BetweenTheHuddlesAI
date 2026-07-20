@@ -1,0 +1,38 @@
+TEAM_MAP = {
+    "cardinals": "ari",
+    "falcons": "atl",
+    "ravens": "bal",
+    "bills": "buf",
+    "panthers": "car",
+    "bears": "chi",
+    "bengals": "cin",
+    "browns": "cle",
+    "cowboys": "dal",
+    "broncos": "den",
+    "lions": "det",
+    "packers": "gb",
+    "texans": "hou",
+    "colts": "ind",
+    "jaguars": "jax",
+    "chiefs": "kc",
+    "raiders": "lv",
+    "chargers": "lac",
+    "rams": "lar",
+    "dolphins": "mia",
+    "vikings": "min",
+    "patriots": "ne",
+    "saints": "no",
+    "giants": "nyg",
+    "jets": "nyj",
+    "eagles": "phi",
+    "steelers": "pit",
+    "49ers": "sf",
+    "seahawks": "sea",
+    "buccaneers": "tb",
+    "titans": "ten",
+    "commanders": "wsh",
+}
+
+
+def get_team_id(team):
+    return TEAM_MAP.get(team.lower(), team.lower())

@@ -1,72 +1,44 @@
 import requests
-from bs4 import BeautifulSoup
 
 
 class InjuryService:
 
     def __init__(self):
-        self.url = "https://www.espn.com/nfl/team/injuries/_/name/no"
+        self.url = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/injuries"
 
+    def get_injuries(self):
+        response = requests.get(self.url, timeout=15)
+        data = response.json()
 
-    def get_injuries(self, limit=10):
+        injuries = []
 
-        try:
-            response = requests.get(
-                self.url,
-                headers={
-                    "User-Agent": "Mozilla/5.0"
-                },
-                timeout=10
-            )
+        for team in data.get("injuries", []):
 
-            soup = BeautifulSoup(
-                response.text,
-                "html.parser"
-            )
+            team_name = team.get("displayName")
 
-            injuries = []
+            for injury in team.get("injuries", []):
 
-            players = soup.select(
-                ".Athlete__PlayerName"
-            )
+                athlete = injury.get("athlete", {})
 
-            for player in players:
+                injuries.append({
+                    "player": athlete.get("displayName"),
+                    "team": athlete.get("team", {}).get("abbreviation"),
+                    "team_name": team_name,
+                    "position": athlete.get("position", {}).get("abbreviation"),
+                    "status": injury.get("status"),
+                    "date": injury.get("date"),
+                    "summary": injury.get("shortComment"),
+                })
 
-                container = player
-
-                for _ in range(5):
-                    container = container.parent
-
-                text = container.get_text(
-                    " | ",
-                    strip=True
-                )
-
-                parts = text.split(" | ")
-
-                if len(parts) >= 5:
-
-                    injuries.append({
-                        "player": parts[0],
-                        "position": parts[1],
-                        "status": parts[3],
-                        "details": parts[4]
-                    })
-
-                if len(injuries) >= limit:
-                    break
-
-            return injuries
-
-
-        except Exception as e:
-            print("Injury Error:", e)
-            return []
+        return injuries
 
 
 if __name__ == "__main__":
-
     service = InjuryService()
 
-    for injury in service.get_injuries():
+    injuries = service.get_injuries()
+
+    print(f"Injuries found: {len(injuries)}")
+
+    for injury in injuries[:20]:
         print(injury)

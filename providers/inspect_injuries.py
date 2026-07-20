@@ -1,34 +1,9 @@
+import json
 import requests
-import re
 
+url = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/no/injuries"
 
-url = "https://www.espn.com/nfl/team/injuries/_/name/no"
+response = requests.get(url, timeout=15)
 
-response = requests.get(
-    url,
-    headers={
-        "User-Agent": "Mozilla/5.0"
-    },
-    timeout=10
-)
-
-html = response.text
-
-patterns = [
-    r'https://[^"]+api[^"]+',
-    r'//[^"]+api[^"]+',
-    r'athlete[^"]+',
-    r'injury[^"]+'
-]
-
-for pattern in patterns:
-    print("\nPATTERN:", pattern)
-
-    matches = re.findall(
-        pattern,
-        html,
-        re.IGNORECASE
-    )
-
-    for match in matches[:10]:
-        print(match)
+print("Status:", response.status_code)
+print(json.dumps(response.json(), indent=2)[:8000])
