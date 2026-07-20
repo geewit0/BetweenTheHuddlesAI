@@ -21,6 +21,20 @@ scores = LiveScoresService()
 injuries = InjuryService()
 
 
+@app.route("/")
+def home():
+    return jsonify({
+        "name": "BetweenTheHuddlesAI API",
+        "status": "online",
+        "version": "1.0"
+    })
+
+
+@app.route("/health")
+def health():
+    return jsonify({"status": "healthy"})
+
+
 @app.route("/team/<team>")
 def team(team):
     result = teams.get_team(team)
