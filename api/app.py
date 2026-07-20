@@ -32,6 +32,10 @@ injuries = InjuryService()
 def home():
     return render_template("index.html")
 
+@app.route("/team")
+def team_page():
+    return render_template("team.html")
+
 
 @app.route("/health")
 def health():
