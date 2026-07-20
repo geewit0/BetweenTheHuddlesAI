@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BetweenTheHuddlesAI</title>
+
+<style>
+
+body{
+    margin:0;
+    background:#101820;
+    color:white;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+header{
+    background:#0b5fff;
+    padding:25px;
+    text-align:center;
+}
+
+header h1{
+    margin:0;
+    font-size:38px;
+}
+
+header p{
+    margin-top:10px;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+    padding:30px;
+}
+
+.card{
+    background:#1b2533;
+    padding:25px;
+    border-radius:12px;
+    margin-bottom:30px;
+}
+
+select{
+    width:100%;
+    padding:15px;
+    font-size:18px;
+    border-radius:10px;
+    border:none;
+    margin-bottom:20px;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    background:#0b5fff;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:18px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0846bf;
+}
+
+footer{
+    text-align:center;
+    color:#bbb;
+    margin-top:40px;
+    padding-bottom:30px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>🏈 BetweenTheHuddlesAI</h1>
+
+<p>Your AI NFL Headquarters</p>
+
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Select a Team</h2>
+
+<select id="team">
+
+<option value="cardinals">Arizona Cardinals</option>
+<option value="falcons">Atlanta Falcons</option>
+<option value="ravens">Baltimore Ravens</option>
+<option value="bills">Buffalo Bills</option>
+<option value="panthers">Carolina Panthers</option>
+<option value="bears">Chicago Bears</option>
+<option value="bengals">Cincinnati Bengals</option>
+<option value="browns">Cleveland Browns</option>
+<option value="cowboys">Dallas Cowboys</option>
+<option value="broncos">Denver Broncos</option>
+<option value="lions">Detroit Lions</option>
+<option value="packers">Green Bay Packers</option>
+<option value="texans">Houston Texans</option>
+<option value="colts">Indianapolis Colts</option>
+<option value="jaguars">Jacksonville Jaguars</option>
+<option value="chiefs">Kansas City Chiefs</option>
+<option value="raiders">Las Vegas Raiders</option>
+<option value="chargers">Los Angeles Chargers</option>
+<option value="rams">Los Angeles Rams</option>
+<option value="dolphins">Miami Dolphins</option>
+<option value="vikings">Minnesota Vikings</option>
+<option value="patriots">New England Patriots</option>
+<option value="saints" selected>New Orleans Saints</option>
+<option value="giants">New York Giants</option>
+<option value="jets">New York Jets</option>
+<option value="eagles">Philadelphia Eagles</option>
+<option value="steelers">Pittsburgh Steelers</option>
+<option value="49ers">San Francisco 49ers</option>
+<option value="seahawks">Seattle Seahawks</option>
+<option value="buccaneers">Tampa Bay Buccaneers</option>
+<option value="titans">Tennessee Titans</option>
+<option value="commanders">Washington Commanders</option>
+
+</select>
+
+<button onclick="goTeam()">
+
+View Team
+
+</button>
+
+</div>
+
+<footer>
+
+BetweenTheHuddlesAI © 2026
+
+</footer>
+
+</div>
+
+<script>
+
+function goTeam(){
+
+const team=document.getElementById("team").value;
+
+window.location="/team/"+team;
+
+}
+
+</script>
+
+</body>
+
+</html>
