@@ -23,16 +23,59 @@ injuries = InjuryService()
 
 @app.route("/")
 def home():
-    return jsonify({
-        "name": "BetweenTheHuddlesAI API",
-        "status": "online",
-        "version": "1.0"
-    })
+    return """
+    <html>
+    <head>
+        <title>BetweenTheHuddlesAI</title>
+        <style>
+            body{
+                background:#111;
+                color:white;
+                font-family:Arial,sans-serif;
+                text-align:center;
+                padding:40px;
+            }
+            h1{
+                color:#00d4ff;
+            }
+            a{
+                color:#00d4ff;
+                text-decoration:none;
+            }
+            .card{
+                background:#222;
+                max-width:700px;
+                margin:auto;
+                padding:25px;
+                border-radius:12px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="card">
+            <h1>🏈 BetweenTheHuddlesAI</h1>
+            <h3>NFL Data API</h3>
+
+            <p>The API is running successfully.</p>
+
+            <h2>Try these endpoints:</h2>
+
+            <p><a href="/team/saints">/team/saints</a></p>
+            <p><a href="/scores">/scores</a></p>
+            <p><a href="/standings">/standings</a></p>
+            <p><a href="/injuries">/injuries</a></p>
+        </div>
+    </body>
+    </html>
+    """
 
 
 @app.route("/health")
 def health():
-    return jsonify({"status": "healthy"})
+    return jsonify({
+        "status": "online",
+        "version": "1.0"
+    })
 
 
 @app.route("/team/<team>")
