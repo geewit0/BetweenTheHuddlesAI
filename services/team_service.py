@@ -7,9 +7,7 @@ from services.injury_service import InjuryService
 
 
 class TeamService:
-
     def __init__(self):
-
         self.db = os.path.join(
             os.path.dirname(__file__),
             "..",
@@ -21,9 +19,7 @@ class TeamService:
         self.news = NewsService()
         self.injuries = InjuryService()
 
-
     def get_team(self, search):
-
         conn = sqlite3.connect(self.db)
         conn.row_factory = sqlite3.Row
 
@@ -42,7 +38,6 @@ class TeamService:
         ))
 
         row = cur.fetchone()
-
         conn.close()
 
         if row is None:
@@ -59,13 +54,13 @@ class TeamService:
             search
         )
 
-        team["injuries"] = self.injuries.get_injuries()
+        team["injuries"] = self.injuries.get_injuries(
+            team["abbreviation"]
+        )
 
         return team
 
 
 if __name__ == "__main__":
-
     service = TeamService()
-
     print(service.get_team("saints"))
