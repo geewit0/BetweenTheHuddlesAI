@@ -59,9 +59,7 @@ class TeamService:
             search
         )
 
-        team["injuries"] = self.injuries.get_injuries(
-            5
-        )
+        team["injuries"] = self.injuries.get_injuries()
 
         return team
 
