@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template_string
 
 from services.team_service import TeamService
 from services.roster_service import RosterService
@@ -20,106 +20,104 @@ standings = StandingsService()
 scores = LiveScoresService()
 injuries = InjuryService()
 
+HOME = """
+<!DOCTYPE html>
+<html>
+<head>
+<title>BetweenTheHuddlesAI</title>
 
-@app.route("/")
-def home():
-    return """
-    <html>
-    <head>
-        <title>BetweenTheHuddlesAI</title>
-        <style>
-            body{
-                background:#111;
-                color:white;
-                font-family:Arial,sans-serif;
-                text-align:center;
-                padding:40px;
-            }
-            h1{
-                color:#00d4ff;
-            }
-            a{
-                color:#00d4ff;
-                text-decoration:none;
-            }
-            .card{
-                background:#222;
-                max-width:700px;
-                margin:auto;
-                padding:25px;
-                border-radius:12px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="card">
-            <h1>🏈 BetweenTheHuddlesAI</h1>
-            <h3>NFL Data API</h3>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-            <p>The API is running successfully.</p>
+<style>
 
-            <h2>Try these endpoints:</h2>
+body{
+background:#111;
+color:white;
+font-family:Arial,sans-serif;
+margin:0;
+padding:0;
+text-align:center;
+}
 
-            <p><a href="/team/saints">/team/saints</a></p>
-            <p><a href="/scores">/scores</a></p>
-            <p><a href="/standings">/standings</a></p>
-            <p><a href="/injuries">/injuries</a></p>
-        </div>
-    </body>
-    </html>
-    """
+header{
+background:#00b7ff;
+padding:25px;
+}
 
+h1{
+margin:0;
+font-size:38px;
+}
 
-@app.route("/health")
-def health():
-    return jsonify({
-        "status": "online",
-        "version": "1.0"
-    })
+p{
+color:#ddd;
+}
 
+.container{
+padding:30px;
+}
 
-@app.route("/team/<team>")
-def team(team):
-    result = teams.get_team(team)
-    if result is None:
-        return jsonify({"error": "Team not found"}), 404
-    return jsonify(result)
+input{
+width:90%;
+max-width:500px;
+padding:15px;
+font-size:18px;
+border-radius:10px;
+border:none;
+margin-bottom:30px;
+}
 
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:15px;
+max-width:900px;
+margin:auto;
+}
 
-@app.route("/team/<team>/roster")
-def team_roster(team):
-    return jsonify(roster.get_roster(team))
+.team{
+background:#222;
+padding:18px;
+border-radius:12px;
+text-decoration:none;
+color:white;
+font-weight:bold;
+transition:.2s;
+}
 
+.team:hover{
+background:#00b7ff;
+}
 
-@app.route("/team/<team>/player/<player_id>")
-def team_player(team, player_id):
-    return jsonify(players.get_player(player_id))
+footer{
+margin-top:40px;
+color:#888;
+font-size:14px;
+}
 
+</style>
 
-@app.route("/team/<team>/schedule")
-def team_schedule(team):
-    return jsonify(schedule.get_schedule(team))
+</head>
 
+<body>
 
-@app.route("/team/<team>/stats")
-def team_stats_route(team):
-    return jsonify(team_stats.get_stats(team))
+<header>
 
+<h1>🏈 BetweenTheHuddlesAI</h1>
 
-@app.route("/standings")
-def standings_route():
-    return jsonify(standings.get_standings())
+<p>Your AI NFL Headquarters</p>
 
+</header>
 
-@app.route("/scores")
-def scores_route():
-    return jsonify(scores.get_scores())
+<div class="container">
 
+<input
+placeholder="Search coming soon..."
+disabled
+>
 
-@app.route("/injuries")
-def injuries_route():
-    return jsonify(injuries.get_injuries())
+<div class="grid">
 
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+<a class="team" href="/team/ARI">Arizona Cardinals</a>
+<a class="team" href="/team/ATL">Atlanta Falcons</a>
+<a class="team" href="/team/B
