@@ -45,9 +45,14 @@ def health():
 @app.route("/team/<team>")
 def team(team):
     result = teams.get_team(team)
+
     if result is None:
         return jsonify({"error": "Team not found"}), 404
-    return jsonify(result)
+
+    return render_template(
+        "team.html",
+        team=result
+    )
 
 
 @app.route("/team/<team>/roster")
