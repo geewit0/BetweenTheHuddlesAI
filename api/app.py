@@ -34,7 +34,12 @@ def home():
 
 @app.route("/team")
 def team_page():
-    return render_template("team.html")
+    all_teams = teams.get_all_teams()
+
+    return render_template(
+        "team.html",
+        teams=all_teams
+    )
 
 
 @app.route("/health")
@@ -50,7 +55,7 @@ def team(team):
         return jsonify({"error": "Team not found"}), 404
 
     return render_template(
-        "team.html",
+        "team_detail.html",
         team=result
     )
 

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Between The Huddles AI - Teams</title>
+    <title>NFL Teams - Between The Huddles AI</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -10,13 +11,9 @@
             padding: 20px;
         }
 
-        h1 {
-            text-align: center;
-        }
-
         .team-card {
             background: #222;
-            padding: 20px;
+            padding: 15px;
             margin: 15px 0;
             border-radius: 10px;
         }
@@ -36,47 +33,18 @@
 
 <h1>NFL Teams</h1>
 
-<a href="/team/saints">
-<div class="team-card">
-    <h2>New Orleans Saints</h2>
-    <p>News, injuries, roster updates, and game analysis.</p>
-</div>
+{% for team in teams %}
+
+<a href="/team/{{ team.abbreviation }}">
+    <div class="team-card">
+        <h2>{{ team.name }}</h2>
+        <p>
+            {{ team.city }} | {{ team.conference }} {{ team.division }}
+        </p>
+    </div>
 </a>
 
-<a href="/team/chiefs">
-<div class="team-card">
-    <h2>Kansas City Chiefs</h2>
-    <p>Latest team updates and performance analysis.</p>
-</div>
-</a>
-
-<a href="/team/eagles">
-<div class="team-card">
-    <h2>Philadelphia Eagles</h2>
-    <p>Roster news, game breakdowns, and predictions.</p>
-</div>
-</a>
-
-<a href="/team/bills">
-<div class="team-card">
-    <h2>Buffalo Bills</h2>
-    <p>Player updates and season outlook.</p>
-</div>
-</a>
-
-<a href="/team/49ers">
-<div class="team-card">
-    <h2>San Francisco 49ers</h2>
-    <p>Team news and injury reports.</p>
-</div>
-</a>
-
-<a href="/team/cowboys">
-<div class="team-card">
-    <h2>Dallas Cowboys</h2>
-    <p>Latest headlines and analysis.</p>
-</div>
-</a>
+{% endfor %}
 
 </body>
 </html>

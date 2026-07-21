@@ -19,6 +19,23 @@ class TeamService:
         self.news = NewsService()
         self.injuries = InjuryService()
 
+    def get_all_teams(self):
+        conn = sqlite3.connect(self.db)
+        conn.row_factory = sqlite3.Row
+
+        cur = conn.cursor()
+
+        cur.execute("""
+        SELECT *
+        FROM teams
+        ORDER BY name
+        """)
+
+        rows = cur.fetchall()
+        conn.close()
+
+        return [dict(row) for row in rows]
+
     def get_team(self, search):
         conn = sqlite3.connect(self.db)
         conn.row_factory = sqlite3.Row

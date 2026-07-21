@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ team.name }} - Between The Huddles AI</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+            padding: 20px;
+        }
+
+        .card {
+            background: #222;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        h1, h2 {
+            color: white;
+        }
+
+        .item {
+            background: #333;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+
+        a {
+            color: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+    <h1>{{ team.name }}</h1>
+    <p>{{ team.city }} | {{ team.conference }} {{ team.division }}</p>
+</div>
+
+
+<div class="card">
+    <h2>Next Game</h2>
+
+    <p>{{ team.next_game.matchup }}</p>
+    <p>{{ team.next_game.date }}</p>
+</div>
+
+
+<div class="card">
+    <h2>Latest News</h2>
+
+    {% for article in team.news %}
+    <div class="item">
+        <h3>{{ article.headline }}</h3>
+        <p>{{ article.description }}</p>
+    </div>
+    {% endfor %}
+
+</div>
+
+
+<div class="card">
+    <h2>Injury Report</h2>
+
+    {% for injury in team.injuries %}
+    <div class="item">
+        <strong>{{ injury.player }}</strong><br>
+        {{ injury.position }} - {{ injury.status }}
+        <p>{{ injury.summary }}</p>
+    </div>
+    {% endfor %}
+
+</div>
+
+
+</body>
+</html>
