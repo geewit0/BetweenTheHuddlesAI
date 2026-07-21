@@ -173,6 +173,58 @@ footer{
 
 {% for article in news %}
 
+<div class="card">
+
+<h2>🏟️ Live Scores</h2>
+
+<div class="grid">
+
+{% for game in scores %}
+
+<div class="team-card">
+
+<h3>{{ game.away_team }} @ {{ game.home_team }}</h3>
+
+<p>{{ game.status }}</p>
+
+{% if game.away_score is defined %}
+<p><strong>{{ game.away_score }} - {{ game.home_score }}</strong></p>
+{% endif %}
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🏆 NFL Standings</h2>
+
+<div class="grid">
+
+{% for division in standings %}
+
+<div class="team-card">
+
+<h3>{{ division.name }}</h3>
+
+<p>{{ division.teams|length }} Teams</p>
+
+<a class="button" href="/standings">
+View Standings
+</a>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
 <div class="news">
 
 <h3>
