@@ -9,6 +9,7 @@ from services.team_stats_service import TeamStatsService
 from services.standings_service import StandingsService
 from services.live_scores_service import LiveScoresService
 from services.injury_service import InjuryService
+from services.ai_service import AIService
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -26,11 +27,17 @@ team_stats = TeamStatsService()
 standings = StandingsService()
 scores = LiveScoresService()
 injuries = InjuryService()
-
+ai = AIService()
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template(
+        "index.html",
+        teams=teams.get_all_teams(),
+        news=teams.news.get_news(10, "NFL"),
+        scores=scores.get_scores(),
+        standings=standings.get_standings()
+    )
 
 @app.route("/team")
 def team_page():
@@ -55,10 +62,10 @@ def team(team):
         return jsonify({"error": "Team not found"}), 404
 
     return render_template(
-        "team_detail.html",
-        team=result
-    )
-
+    "team_detail.html",
+    team=result,
+    analysis=ai.analyze_team(result)
+)
 
 @app.route("/team/<team>/roster")
 def team_roster(team):
@@ -81,13 +88,21 @@ def team_stats_route(team):
 
 
 @app.route("/standings")
-def standings_route():
-    return jsonify(standings.get_standings())
+def standings_page():
+    data = standings.get_standings()
+    print(data)
+    return render_template(
+        "standings.html",
+        standings=data
+    )
 
 
 @app.route("/scores")
-def scores_route():
-    return jsonify(scores.get_scores())
+def scores_page():
+    return render_template(
+        "scores.html",
+        scores=scores.get_scores()
+    )
 
 
 @app.route("/injuries")
