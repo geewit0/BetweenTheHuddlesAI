@@ -1,82 +1,239 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>{{ team.name }} - Between The Huddles AI</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #111;
-            color: white;
-            padding: 20px;
-        }
+<title>{{ team.name }} - Between The Huddles AI</title>
 
-        .card {
-            background: #222;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-        }
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        h1, h2 {
-            color: white;
-        }
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#0f172a;
+    color:white;
+}
 
-        .item {
-            background: #333;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 8px;
-        }
+nav{
+    background:#08111f;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 30px;
+}
 
-        a {
-            color: #ddd;
-        }
-    </style>
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.logo img{
+    width:44px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:18px;
+    font-weight:bold;
+}
+
+nav a:hover{
+    color:#3ea6ff;
+}
+
+.hero{
+    background:linear-gradient(135deg,#0b5fff,#001d52);
+    padding:45px 20px;
+}
+
+.hero-content{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    gap:30px;
+    flex-wrap:wrap;
+}
+
+.team-logo{
+    width:140px;
+}
+
+.hero h1{
+    font-size:42px;
+    margin-bottom:8px;
+}
+
+.hero p{
+    color:#dbeafe;
+    font-size:18px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:30px 20px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#1e293b;
+    border-radius:12px;
+    padding:24px;
+}
+
+.card h2{
+    color:#61b8ff;
+    margin-bottom:15px;
+}
+
+.item{
+    background:#334155;
+    border-radius:8px;
+    padding:14px;
+    margin-bottom:12px;
+}
+
+.item:last-child{
+    margin-bottom:0;
+}
+
+a{
+    color:#7dc4ff;
+    text-decoration:none;
+}
+
+a:hover{
+    text-decoration:underline;
+}
+</style>
 </head>
 
 <body>
 
-<div class="card">
-    <h1>{{ team.name }}</h1>
-    <p>{{ team.city }} | {{ team.conference }} {{ team.division }}</p>
+<nav>
+
+<div class="logo">
+<img src="/static/images/logo.svg" alt="Logo">
+<span>Between The Huddles AI</span>
 </div>
 
-
-<div class="card">
-    <h2>Next Game</h2>
-
-    <p>{{ team.next_game.matchup }}</p>
-    <p>{{ team.next_game.date }}</p>
+<div>
+<a href="/">Home</a>
+<a href="/scores">Scores</a>
+<a href="/standings">Standings</a>
+<a href="/team">Teams</a>
 </div>
 
+</nav>
+<section class="hero">
 
-<div class="card">
-    <h2>Latest News</h2>
+<div class="hero-content">
 
-    {% for article in team.news %}
-    <div class="item">
-        <h3>{{ article.headline }}</h3>
-        <p>{{ article.description }}</p>
-    </div>
-    {% endfor %}
+<img
+class="team-logo"
+src="/static/images/teams/{{ team.abbreviation|lower }}.png"
+alt="{{ team.name }}">
 
-</div>
+<div>
 
+<h1>{{ team.name }}</h1>
 
-<div class="card">
-    <h2>Injury Report</h2>
-
-    {% for injury in team.injuries %}
-    <div class="item">
-        <strong>{{ injury.player }}</strong><br>
-        {{ injury.position }} - {{ injury.status }}
-        <p>{{ injury.summary }}</p>
-    </div>
-    {% endfor %}
+<p>
+{{ team.city }} • {{ team.conference }} {{ team.division }}
+</p>
 
 </div>
 
+</div>
+
+</section>
+
+<div class="container">
+
+<div class="grid">
+
+<div class="card">
+
+<h2>🏈 Next Game</h2>
+
+<p><strong>{{ team.next_game.matchup }}</strong></p>
+
+<p>{{ team.next_game.date }}</p>
+
+</div>
+
+<div class="card">
+
+<h2>🤖 AI Analysis</h2>
+
+<p>{{ analysis }}</p>
+
+</div>
+
+<div class="card">
+
+<h2>🩺 Injury Report</h2>
+
+{% for injury in team.injuries %}
+
+<div class="item">
+
+<strong>{{ injury.player }}</strong><br>
+
+{{ injury.position }} — {{ injury.status }}
+
+<p>{{ injury.summary }}</p>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<div class="card">
+
+<h2>📰 Latest News</h2>
+
+{% for article in team.news %}
+
+<div class="item">
+
+<h3>
+
+<a href="{{ article.link }}" target="_blank">
+
+{{ article.headline }}
+
+</a>
+
+</h3>
+
+<p>{{ article.description }}</p>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</div>
 
 </body>
 </html>
