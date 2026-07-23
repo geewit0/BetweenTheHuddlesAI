@@ -1,61 +1,58 @@
+import random
+
+
 class AIService:
+
     def analyze_team(self, team):
+        team_name = team["name"]
+
+        opponent = "their opponent"
+        if team.get("next_game"):
+            opponent = team["next_game"].get("opponent", opponent)
+
         injuries = team.get("injuries", [])
-        news = team.get("news", [])
-        next_game = team.get("next_game", {})
+        injury_count = len(injuries)
 
-        questionable = [
-            i for i in injuries
-            if i.get("status", "").lower() == "questionable"
+        offense_options = [
+            "The offense should establish the running game early while protecting the quarterback. Sustained drives will be important.",
+            "Success will depend on winning first down and limiting negative plays. A balanced offensive attack gives the best chance to control the game.",
+            "Explosive plays will be important, but avoiding turnovers will matter even more."
         ]
 
-        active = [
-            i for i in injuries
-            if i.get("status", "").lower() == "active"
+        defense_options = [
+            "Generating pressure without giving up explosive plays should be the defense's primary focus.",
+            "The defense must force third-and-long situations and create turnovers whenever possible.",
+            "Stopping the run early will allow the defense to attack opposing quarterbacks more aggressively."
         ]
 
-        summary = (
-            f"{team['name']} will open the season against "
-            f"{next_game.get('opponent', 'their opponent')}."
-        )
-
-        if questionable:
-            summary += (
-                f" The team currently has {len(questionable)} "
-                "questionable player(s) to monitor."
+        if injury_count == 0:
+            summary = (
+                f"{team_name} enters its next matchup against {opponent} with a healthy roster. "
+                "Depth across the team should provide flexibility on both sides of the ball."
+            )
+        elif injury_count <= 3:
+            summary = (
+                f"{team_name} has a few injury concerns heading into the matchup with {opponent}, "
+                "but most key contributors are expected to be available."
             )
         else:
-            summary += " The roster appears relatively healthy."
-
-        offense = (
-            "The offense should focus on protecting the quarterback "
-            "and establishing a consistent running game."
-        )
-
-        if any(i["position"] == "RB" for i in active):
-            offense += (
-                " The running back room provides solid depth entering "
-                "the matchup."
+            summary = (
+                f"{team_name} is dealing with several injuries entering the game against {opponent}. "
+                "Depth players may have larger roles than expected."
             )
 
-        defense = (
-            "The defense's priority will be generating pressure, "
-            "forcing turnovers, and limiting explosive plays."
-        )
-
-        prediction = (
-            f"{team['name']} has a realistic opportunity to win if "
-            "they protect the football and control the line of scrimmage."
-        )
-
-        if news:
-            prediction += (
-                f" Recent headline: {news[0]['headline']}"
+        if injury_count >= 4:
+            prediction = (
+                f"If {team_name} can overcome its injury concerns and avoid turnovers, it has a realistic chance to defeat {opponent}."
+            )
+        else:
+            prediction = (
+                f"{team_name} has a solid opportunity to defeat {opponent} if it controls the line of scrimmage and wins the turnover battle."
             )
 
         return {
             "summary": summary,
-            "offense": offense,
-            "defense": defense,
+            "offense": random.choice(offense_options),
+            "defense": random.choice(defense_options),
             "prediction": prediction
         }
