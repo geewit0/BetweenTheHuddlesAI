@@ -4,108 +4,148 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>NFL Teams - Between The Huddles AI</title>
+<title>Between The Huddles AI</title>
 
 <style>
 
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
 body{
-font-family:Arial,Helvetica,sans-serif;
-background:#0f172a;
-color:white;
+    background:#0f172a;
+    color:#ffffff;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
 nav{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:18px 30px;
-background:#08111f;
+    background:#08111f;
+    padding:18px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
 }
 
-.logo{
-font-size:28px;
-font-weight:bold;
-color:#45b3ff;
+nav h2{
+    color:#38bdf8;
 }
 
 nav a{
-color:white;
-text-decoration:none;
-margin-left:18px;
-font-weight:bold;
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+    font-weight:bold;
 }
 
 nav a:hover{
-color:#45b3ff;
+    color:#38bdf8;
+}
+
+.hero{
+    background:linear-gradient(135deg,#0b5fff,#001d52);
+    text-align:center;
+    padding:70px 20px;
+}
+
+.hero h1{
+    font-size:48px;
+    margin-bottom:10px;
+}
+
+.hero p{
+    color:#dbeafe;
+    font-size:20px;
 }
 
 .container{
-max-width:1200px;
-margin:auto;
-padding:30px 20px;
+    width:95%;
+    max-width:1300px;
+    margin:auto;
+    padding:30px 0;
 }
 
-h1{
-margin-bottom:25px;
-font-size:42px;
+.card{
+    background:#1e293b;
+    border-radius:12px;
+    padding:24px;
+    margin-bottom:25px;
 }
 
-.search{
-width:100%;
-padding:16px;
-font-size:18px;
-border:none;
-border-radius:10px;
-margin-bottom:25px;
-background:#1e293b;
-color:white;
+.card h2{
+    color:#60a5fa;
+    margin-bottom:20px;
 }
 
 .grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:20px;
 }
-.team-link{
-    display:block;
-    text-decoration:none;
-    color:inherit;
-}
+
 .team-card{
-background:#1e293b;
-border-radius:12px;
-padding:20px;
-transition:.2s;
+    background:#293548;
+    border-radius:10px;
+    padding:20px;
+    text-align:center;
+    transition:.2s;
 }
 
 .team-card:hover{
-transform:translateY(-4px);
-background:#273449;
+    transform:translateY(-4px);
 }
 
 .team-card img{
-width:72px;
-height:72px;
-margin-bottom:12px;
+    width:72px;
+    margin-bottom:12px;
 }
 
-.team-card h2{
-margin-bottom:8px;
+.button{
+    display:inline-block;
+    margin-top:15px;
+    padding:10px 18px;
+    border-radius:8px;
+    background:#0b5fff;
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
 }
 
-.team-card p{
-color:#cbd5e1;
+.button:hover{
+    background:#084ccf;
 }
 
-a{
-text-decoration:none;
-color:inherit;
+.news{
+    border-bottom:1px solid #334155;
+    padding-bottom:16px;
+    margin-bottom:16px;
+}
+
+.news:last-child{
+    border:none;
+    margin-bottom:0;
+}
+
+.news a{
+    color:#7dd3fc;
+    text-decoration:none;
+}
+
+.score{
+    text-align:center;
+    background:#293548;
+    padding:18px;
+    border-radius:10px;
+}
+
+footer{
+    background:#08111f;
+    text-align:center;
+    padding:30px;
+    color:#94a3b8;
 }
 
 </style>
@@ -115,9 +155,7 @@ color:inherit;
 
 <nav>
 
-<div class="logo">
-Between The Huddles AI
-</div>
+<h2>🏈 Between The Huddles AI</h2>
 
 <div>
 <a href="/">Home</a>
@@ -127,35 +165,94 @@ Between The Huddles AI
 
 </nav>
 
-<div class="container">
+<div class="hero">
 
-<h1>All NFL Teams</h1>
+<h1>Real-Time NFL Coverage</h1>
 
-<input
-class="search"
-id="search"
-type="text"
-placeholder="Search for a team...">
-
-<div class="grid" id="teams">
-
-{% for team in teams %}
-
-<a href="/team/{{ team.slug }}" class="team-link">
-
-<div class="team-card">
-
-<img src="/static/images/teams/{{ team.abbreviation|lower }}.png">
-
-<h2>{{ team.name }}</h2>
-
-<p>{{ team.city }}</p>
-
-<p>{{ team.conference }} • {{ team.division }}</p>
+<p>News • Scores • Teams • AI Analysis • Predictions</p>
 
 </div>
 
+<div class="container">
+<div class="card">
+
+<h2>📰 Breaking NFL News</h2>
+
+{% for article in news %}
+
+<div class="news">
+
+<h3>
+
+<a href="{{ article.link }}" target="_blank">
+
+{{ article.headline }}
+
 </a>
+
+</h3>
+
+<p>{{ article.description }}</p>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<div class="card">
+
+<h2>🏈 Live Scores</h2>
+
+<div class="grid">
+
+{% for game in scores %}
+
+<div class="score">
+
+<h3>{{ game.away.team }} @ {{ game.home.team }}</h3>
+
+<p>{{ game.status }}</p>
+
+<p>
+
+<strong>
+
+{{ game.away.score }} - {{ game.home.score }}
+
+</strong>
+
+</p>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+<div class="card">
+
+<h2>🏈 NFL Teams</h2>
+
+<div class="grid">
+
+{% for team in teams %}
+
+<div class="team-card">
+
+<img src="/static/images/teams/{{ team.abbreviation|lower }}.png"
+     alt="{{ team.name }}">
+
+<h3>{{ team.name }}</h3>
+
+<p>{{ team.city }}</p>
+
+<a class="button" href="/team/{{ team.slug }}">
+View Team
+</a>
+
+</div>
 
 {% endfor %}
 
@@ -163,25 +260,14 @@ placeholder="Search for a team...">
 
 </div>
 
-<script>
+</div>
 
-const search=document.getElementById("search");
+<footer>
 
-search.addEventListener("keyup",function(){
+<p>© 2026 Between The Huddles AI</p>
 
-const value=this.value.toLowerCase();
-
-document.querySelectorAll(".team-link").forEach(function(team){
-
-const text=team.innerText.toLowerCase();
-
-team.style.display=text.includes(value)?"block":"none";
-
-});
-
-});
-
-</script>
+</footer>
 
 </body>
+
 </html>
