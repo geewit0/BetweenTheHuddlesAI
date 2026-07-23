@@ -88,18 +88,62 @@ class TeamService:
 
 
     def get_team_stats(self, team_name):
-        return {
-            "record": "0-0",
-            "division_rank": "TBD",
-            "ppg": "0.0",
-            "oppg": "0.0",
-            "pass_yards": "0",
-            "rush_yards": "0",
-            "offense_rank": "TBD",
-            "defense_rank": "TBD",
-            "turnover_diff": "0"
-        }
+        conn = sqlite3.connect(self.db)
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
 
+        cur.execute("""
+            SELECT
+                ts.wins,
+                ts.losses,
+                ts.ties,
+                ts.division_rank,
+                ts.points_per_game,
+                ts.points_allowed_per_game,
+                ts.passing_yards_per_game,
+                ts.rushing_yards_per_game,
+                ts.offense_rank,
+                ts.defense_rank,
+                ts.turnover_differential
+            FROM team_stats ts
+            JOIN teams t
+                ON ts.team_id = t.id
+            WHERE LOWER(t.name) LIKE ?
+               OR LOWER(REPLACE(t.name, ' ', '-')) = ?
+               OR LOWER(t.abbreviation) = ?
+        """, (
+            f"%{team_name.lower()}%",
+            team_name.lower(),
+            team_name.lower()
+        ))
+
+        row = cur.fetchone()
+        conn.close()
+
+        if row is None:
+            return {
+                "record": "0-0",
+                "division_rank": "TBD",
+                "ppg": "0.0",
+                "oppg": "0.0",
+                "pass_yards": "0.0",
+                "rush_yards": "0.0",
+                "offense_rank": "TBD",
+                "defense_rank": "TBD",
+                "turnover_diff": "0"
+            }
+
+        return {
+            "record": f"{row['wins']}-{row['losses']}" + (f"-{row['ties']}" if row["ties"] else ""),
+            "division_rank": row["division_rank"],
+            "ppg": row["points_per_game"],
+            "oppg": row["points_allowed_per_game"],
+            "pass_yards": row["passing_yards_per_game"],
+            "rush_yards": row["rushing_yards_per_game"],
+            "offense_rank": row["offense_rank"],
+            "defense_rank": row["defense_rank"],
+            "turnover_diff": row["turnover_differential"]
+        }
 
 if __name__ == "__main__":
     service = TeamService()
