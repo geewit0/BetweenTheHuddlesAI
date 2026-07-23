@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, render_template
 import os
+from datetime import datetime
 
 from services.team_service import TeamService
 from services.roster_service import RosterService
@@ -57,6 +58,15 @@ def health():
 @app.route("/team/<team>")
 def team(team):
     result = teams.get_team(team)
+
+if result and result.get("next_game"):
+    date = result["next_game"].get("date")
+    if date:
+        try:
+            dt = datetime.strptime(date, "%Y-%m-%dT%H:%MZ")
+            result["next_game"]["date"] = dt.strftime("%A, %B %d, %Y • %I:%M %p UTC")
+        except Exception:
+            pass
 
     if result is None:
         return jsonify({"error": "Team not found"}), 404
