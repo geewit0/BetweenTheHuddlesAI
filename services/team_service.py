@@ -87,6 +87,20 @@ class TeamService:
         return team
 
 
+    def get_team_stats(self, team_name):
+        return {
+            "record": "0-0",
+            "division_rank": "TBD",
+            "ppg": "0.0",
+            "oppg": "0.0",
+            "pass_yards": "0",
+            "rush_yards": "0",
+            "offense_rank": "TBD",
+            "defense_rank": "TBD",
+            "turnover_diff": "0"
+        }
+
+
 if __name__ == "__main__":
     service = TeamService()
     print(service.get_team("saints"))
