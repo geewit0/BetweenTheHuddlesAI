@@ -19,6 +19,7 @@ class TeamService:
         self.news = NewsService()
         self.injuries = InjuryService()
 
+
     def get_all_teams(self):
         conn = sqlite3.connect(self.db)
         conn.row_factory = sqlite3.Row
@@ -34,7 +35,13 @@ class TeamService:
         rows = cur.fetchall()
         conn.close()
 
-        return [dict(row) for row in rows]
+        teams = [dict(row) for row in rows]
+
+        for team in teams:
+            team["slug"] = team["name"].lower().replace(" ", "-")
+
+        return teams
+
 
     def get_team(self, search):
         conn = sqlite3.connect(self.db)
@@ -48,7 +55,9 @@ class TeamService:
         WHERE LOWER(name) LIKE ?
            OR LOWER(city) LIKE ?
            OR LOWER(abbreviation) LIKE ?
+           OR LOWER(REPLACE(name, ' ', '-')) LIKE ?
         """, (
+            f"%{search.lower()}%",
             f"%{search.lower()}%",
             f"%{search.lower()}%",
             f"%{search.lower()}%"
