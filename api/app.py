@@ -59,23 +59,24 @@ def health():
 def team(team):
     result = teams.get_team(team)
 
-if result and result.get("next_game"):
-    date = result["next_game"].get("date")
-    if date:
-        try:
-            dt = datetime.strptime(date, "%Y-%m-%dT%H:%MZ")
-            result["next_game"]["date"] = dt.strftime("%A, %B %d, %Y • %I:%M %p UTC")
-        except Exception:
-            pass
+    if result and result.get("next_game"):
+        date = result["next_game"].get("date")
+        if date:
+            try:
+                dt = datetime.strptime(date, "%Y-%m-%dT%H:%MZ")
+                result["next_game"]["date"] = dt.strftime("%A, %B %d, %Y • %I:%M %p UTC")
+            except Exception:
+                pass
 
     if result is None:
         return jsonify({"error": "Team not found"}), 404
 
     return render_template(
-    "team_detail.html",
-    team=result,
-    analysis=ai.analyze_team(result)
-)
+        "team_detail.html",
+        team=result,
+        analysis=ai.analyze_team(result),
+        stats=teams.get_team_stats(team)
+    )
 
 @app.route("/team/<team>/roster")
 def team_roster(team):
