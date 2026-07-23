@@ -203,6 +203,30 @@ alt="{{ team.name }}">
 
 <div class="card">
 
+<h2>📊 Team Statistics</h2>
+
+<p><strong>Record</strong><br>{{ stats.record }}</p>
+
+<p><strong>Division Rank</strong><br>{{ stats.division_rank }}</p>
+
+<p><strong>Points Per Game</strong><br>{{ stats.ppg }}</p>
+
+<p><strong>Points Allowed</strong><br>{{ stats.oppg }}</p>
+
+<p><strong>Passing Yards/Game</strong><br>{{ stats.pass_yards }}</p>
+
+<p><strong>Rushing Yards/Game</strong><br>{{ stats.rush_yards }}</p>
+
+<p><strong>Offense Rank</strong><br>{{ stats.offense_rank }}</p>
+
+<p><strong>Defense Rank</strong><br>{{ stats.defense_rank }}</p>
+
+<p><strong>Turnover Differential</strong><br>{{ stats.turnover_diff }}</p>
+
+</div>
+
+<div class="card">
+
 <h2>🩺 Injury Report</h2>
 
 {% for injury in team.injuries %}
